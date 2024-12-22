@@ -77,15 +77,16 @@ Machine 2&#39;s average time is ((4.512 - 4.100) + (5.000 - 2.500)) / 2 = 1.456
 
 
 <h1>Joined Table looks like</h1>
-### **Visualizing Matching Rows**
+### Visualizing Matching Rows
 
 Below is how the rows are paired based on the criteria:
 
-| **a1 (Start Row)** | **a2 (End Row)** | **Match Criteria Met?** |
-| --- | ------ | -------------------------------------------------------------------------------------------------- --- |
-| machine_id = 0, process_id = 0, timestamp = 0.712 | machine_id = 0, process_id = 0, timestamp = 1.520 | ✅ Matched (`a1.activity_type = 'start'`, `a2.activity_type = 'end'`) |
-| machine_id = 0, process_id = 1, timestamp = 3.140 | machine_id = 0, process_id = 1, timestamp = 4.120 | ✅ Matched |
-| machine_id = 1, process_id = 0, timestamp = 0.550 | machine_id = 1, process_id = 0, timestamp = 1.550 | ✅ Matched |
-| machine_id = 1, process_id = 1, timestamp = 0.430 | machine_id = 1, process_id = 1, timestamp = 1.420 | ✅ Matched |
-| machine_id = 2, process_id = 0, timestamp = 4.100 | machine_id = 2, process_id = 0, timestamp = 4.512 | ✅ Matched |
-| machine_id = 2, process_id = 1, timestamp = 2.500 | machine_id = 2, process_id = 1, timestamp = 5.000 | ✅ Matched |
+| **a1 (Start Row)**                                      | **a2 (End Row)**                                      | **Match Criteria Met?**                                                                 |
+|---------------------------------------------------------|------------------------------------------------------|----------------------------------------------------------------------------------------|
+| machine_id = 0, process_id = 0, timestamp = 0.712       | machine_id = 0, process_id = 0, timestamp = 1.520    | ✅ Matched (`a1.activity_type = 'start'`, `a2.activity_type = 'end'`)                  |
+| machine_id = 0, process_id = 1, timestamp = 3.140       | machine_id = 0, process_id = 1, timestamp = 4.120    | ✅ Matched                                                                             |
+| machine_id = 1, process_id = 0, timestamp = 0.550       | machine_id = 1, process_id = 0, timestamp = 1.550    | ✅ Matched                                                                             |
+| machine_id = 1, process_id = 1, timestamp = 0.430       | machine_id = 1, process_id = 1, timestamp = 1.420    | ✅ Matched                                                                             |
+| machine_id = 2, process_id = 0, timestamp = 4.100       | machine_id = 2, process_id = 0, timestamp = 4.512    | ✅ Matched                                                                             |
+| machine_id = 2, process_id = 1, timestamp = 2.500       | machine_id = 2, process_id = 1, timestamp = 5.000    | ✅ Matched                                                                             |
+
