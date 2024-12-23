@@ -73,3 +73,99 @@ Average selling price = Total Price of Product / Number of products sold.
 Average selling price for product 1 = ((100 * 5) + (15 * 20)) / 115 = 6.96
 Average selling price for product 2 = ((200 * 15) + (30 * 30)) / 230 = 16.96
 </pre>
+
+
+Here’s a step-by-step explanation of the query:
+
+### Input Tables:
+- **Prices**: Contains `product_id`, `start_date`, `end_date`, and `price` during specific time ranges.
+- **UnitsSold**: Contains `product_id`, `purchase_date`, and the number of `units` sold on that date.
+
+The goal is to calculate the **average selling price** for each product based on the prices and units sold during overlapping date ranges.
+
+---
+
+### Query Explanation:
+#### **1. SELECT clause:**
+```sql
+select p.product_id,
+IFNULL(round((sum(p.price * u.units)/sum(u.units)), 2),0) as average_price
+```
+- `p.product_id`: Selects the product ID.
+- `sum(p.price * u.units)`: Calculates the total price for all units sold for each product. 
+  - This is the product of the `price` from the `Prices` table and the `units` from the `UnitsSold` table.
+- `sum(u.units)`: Calculates the total number of units sold for each product.
+- `sum(p.price * u.units)/sum(u.units)`: Divides the total price by the total number of units to get the **average price**.
+- `round(..., 2)`: Rounds the result to 2 decimal places.
+- `IFNULL(..., 0)`: Handles cases where no units were sold by setting the `average_price` to `0`.
+
+---
+
+#### **2. FROM clause:**
+```sql
+from prices p
+```
+- Starts with the `Prices` table (`p`) as the base.
+
+---
+
+#### **3. JOIN clause:**
+```sql
+left join unitsSold u 
+on p.product_id = u.product_id
+and u.purchase_date between p.start_date and p.end_date
+```
+- Performs a **LEFT JOIN** between the `Prices` (`p`) and `UnitsSold` (`u`) tables on:
+  1. Matching `product_id`.
+  2. Ensuring the `purchase_date` from `UnitsSold` falls within the `start_date` and `end_date` of the `Prices` table.
+
+This ensures that only the prices valid during the purchase dates are used in calculations.
+
+---
+
+#### **4. GROUP BY clause:**
+```sql
+group by 1
+```
+- Groups the data by `p.product_id` (the first column in the `SELECT` clause).
+- Ensures that the calculations are performed separately for each product.
+
+---
+
+### Calculation Example:
+
+#### **Product 1:**
+1. **Units Sold and Prices:**
+   - 100 units on `2019-02-25` at $5.
+   - 15 units on `2019-03-01` at $20.
+2. **Total Price:**
+   - `(100 * 5) + (15 * 20) = 500 + 300 = 800`
+3. **Total Units:**
+   - `100 + 15 = 115`
+4. **Average Price:**
+   - `800 / 115 ≈ 6.96`
+
+---
+
+#### **Product 2:**
+1. **Units Sold and Prices:**
+   - 200 units on `2019-02-10` at $15.
+   - 30 units on `2019-03-22` at $30.
+2. **Total Price:**
+   - `(200 * 15) + (30 * 30) = 3000 + 900 = 3900`
+3. **Total Units:**
+   - `200 + 30 = 230`
+4. **Average Price:**
+   - `3900 / 230 ≈ 16.96`
+
+---
+
+### Final Output:
+```plaintext
++------------+---------------+
+| product_id | average_price |
++------------+---------------+
+| 1          | 6.96          |
+| 2          | 16.96         |
++------------+---------------+
+```
