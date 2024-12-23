@@ -69,3 +69,93 @@ Employee table:
 +-------------+---------------+
 <strong>Explanation:</strong> The average experience years for the first project is (3 + 2 + 1) / 3 = 2.00 and for the second project is (3 + 2) / 2 = 2.50
 </pre>
+
+
+
+Got it! Let’s make sure the tables are represented in a **GitHub Markdown-compatible format** for easy readability and pasting.
+
+---
+
+### **Input Tables**
+
+#### **Project Table**
+```markdown
+| project_id | employee_id |
+|------------|-------------|
+| 1          | 1           |
+| 1          | 2           |
+| 1          | 3           |
+| 2          | 1           |
+| 2          | 4           |
+```
+
+#### **Employee Table**
+```markdown
+| employee_id | name   | experience_years |
+|-------------|--------|------------------|
+| 1           | Khaled | 3                |
+| 2           | Ali    | 2                |
+| 3           | John   | 1                |
+| 4           | Doe    | 2                |
+```
+
+---
+
+### **Query**
+
+```sql
+SELECT p.project_id,  
+       ROUND(AVG(e.experience_years), 2) AS average_years
+FROM project p 
+JOIN employee e 
+ON p.employee_id = e.employee_id
+GROUP BY p.project_id;
+```
+
+---
+
+### **Step-by-Step Execution**
+
+#### **Step 1: Join the Tables**
+The `JOIN` combines records from both tables where `project.employee_id = employee.employee_id`.
+
+Result after the join:
+```markdown
+| project_id | employee_id | name   | experience_years |
+|------------|-------------|--------|------------------|
+| 1          | 1           | Khaled | 3                |
+| 1          | 2           | Ali    | 2                |
+| 1          | 3           | John   | 1                |
+| 2          | 1           | Khaled | 3                |
+| 2          | 4           | Doe    | 2                |
+```
+
+---
+
+#### **Step 2: Group by `project_id`**
+The `GROUP BY` groups records by `project_id` for aggregate calculations:
+- For `project_id = 1`: Employees 1, 2, and 3.
+- For `project_id = 2`: Employees 1 and 4.
+
+---
+
+#### **Step 3: Calculate Average Experience**
+Use `AVG()` to calculate the average `experience_years` for each `project_id`:
+- For `project_id = 1`:
+  \[
+  \text{Average} = \frac{(3 + 2 + 1)}{3} = 2.00
+  \]
+- For `project_id = 2`:
+  \[
+  \text{Average} = \frac{(3 + 2)}{2} = 2.50
+  \]
+
+---
+
+### **Output Table**
+```markdown
+| project_id | average_years |
+|------------|---------------|
+| 1          | 2.00          |
+| 2          | 2.50          |
+```
