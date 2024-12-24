@@ -67,3 +67,110 @@ Dog queries poor_ query_percentage is (1 / 3) * 100 = 33.33
 Cat queries quality equals ((2 / 5) + (3 / 3) + (4 / 7)) / 3 = 0.66
 Cat queries poor_ query_percentage is (1 / 3) * 100 = 33.33
 </pre>
+
+
+Got it! I'll rewrite the mathematical explanations with clear formatting instead of inline text, similar to how I format tables. Here's the updated explanation:
+
+---
+
+### **Step-by-Step Explanation**
+
+#### **1. Filtering with `WHERE query_name IS NOT NULL`**
+This ensures that rows with `NULL` in the `query_name` column are excluded from the calculations.
+
+---
+
+#### **2. Calculating Quality with `ROUND(AVG(rating / position), 2)`**
+This computes the **average ratio** of `rating / position` for each `query_name`, rounded to 2 decimal places.
+
+For `Dog`:
+- Rows for `Dog`:
+  ```
+  +------------+------------------+----------+--------+
+  | query_name | result           | position | rating |
+  +------------+------------------+----------+--------+
+  | Dog        | Golden Retriever | 1        | 5      |
+  | Dog        | German Shepherd  | 2        | 5      |
+  | Dog        | Mule             | 200      | 1      |
+  +------------+------------------+----------+--------+
+  ```
+- Ratios:
+  ```
+  5 / 1 = 5.00
+  5 / 2 = 2.50
+  1 / 200 = 0.005
+  ```
+- Average:
+  ```
+  (5.00 + 2.50 + 0.005) / 3 = 2.5017
+  ```
+- Rounded:
+  ```
+  2.50
+  ```
+
+For `Cat`:
+- Rows for `Cat`:
+  ```
+  +------------+----------+----------+--------+
+  | query_name | result   | position | rating |
+  +------------+----------+----------+--------+
+  | Cat        | Shirazi  | 5        | 2      |
+  | Cat        | Siamese  | 3        | 3      |
+  | Cat        | Sphynx   | 7        | 4      |
+  +------------+----------+----------+--------+
+  ```
+- Ratios:
+  ```
+  2 / 5 = 0.40
+  3 / 3 = 1.00
+  4 / 7 ≈ 0.5714
+  ```
+- Average:
+  ```
+  (0.40 + 1.00 + 0.5714) / 3 ≈ 0.6571
+  ```
+- Rounded:
+  ```
+  0.66
+  ```
+
+---
+
+#### **3. Calculating Poor Query Percentage with `ROUND(AVG(rating < 3) * 100, 2)`**
+The expression `rating < 3` evaluates as follows:
+- **1** if `rating` is less than 3.
+- **0** otherwise.
+
+For `Dog`:
+- Rows with `rating < 3`: Only the row with `Mule` (rating = 1).
+- Total rows for `Dog`: 3.
+- Calculation:
+  ```
+  (1 / 3) * 100 = 33.33
+  ```
+
+For `Cat`:
+- Rows with `rating < 3`: Only the row with `Shirazi` (rating = 2).
+- Total rows for `Cat`: 3.
+- Calculation:
+  ```
+  (1 / 3) * 100 = 33.33
+  ```
+
+---
+
+### **Final Output**
+
+```
++------------+---------+-----------------------+
+| query_name | quality | poor_query_percentage |
++------------+---------+-----------------------+
+| Dog        | 2.50    | 33.33                 |
+| Cat        | 0.66    | 33.33                 |
++------------+---------+-----------------------+
+```
+
+---
+
+
