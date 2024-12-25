@@ -44,3 +44,98 @@ Activity table:
 <strong>Explanation:</strong> 
 Only the player with id 1 logged back in after the first day he had logged in so the answer is 1/3 = 0.33
 </pre>
+
+
+
+Here's the query for the described problem, explained step by step:
+
+---
+
+### **Goal**
+The task is to calculate the fraction of players who logged in on the day after their first login date, rounded to two decimal places.
+
+---
+
+### **Query**
+
+```sql
+SELECT 
+    ROUND(SUM(player_logins) / COUNT(DISTINCT player_id), 2) AS fraction
+FROM (
+    SELECT 
+        player_id, 
+        DATEDIFF(event_date, MIN(event_date) OVER(PARTITION BY player_id)) = 1 AS player_logins
+    FROM 
+        activity
+) AS logins;
+```
+
+---
+
+### **Step-by-Step Explanation**
+
+#### 1. **Inner Query**: 
+   ```sql
+   SELECT 
+       player_id, 
+       DATEDIFF(event_date, MIN(event_date) OVER(PARTITION BY player_id)) = 1 AS player_logins
+   FROM 
+       activity;
+   ```
+   - **Purpose**: Identify players who logged in exactly one day after their first login date.
+   - **Logic**:
+     - `MIN(event_date) OVER(PARTITION BY player_id)`:
+       - Finds the first login date for each player (`player_id`).
+     - `DATEDIFF(event_date, MIN(event_date) OVER(PARTITION BY player_id)) = 1`:
+       - Calculates the difference in days between the login date (`event_date`) and the first login date (`MIN(event_date)`).
+       - Returns `1` (true) if the difference is exactly one day, indicating the player logged in again on the day after their first login date.
+
+   - **Result Example** (based on the input data):
+     | player_id | player_logins |
+     |-----------|---------------|
+     | 1         | 1             |
+     | 2         | 0             |
+     | 3         | 0             |
+
+---
+
+#### 2. **Outer Query**: 
+   ```sql
+   SELECT 
+       ROUND(SUM(player_logins) / COUNT(DISTINCT player_id), 2) AS fraction
+   FROM 
+       (...);
+   ```
+   - **Purpose**: Calculate the fraction of players who logged in again on the day after their first login.
+   - **Key Components**:
+     - `SUM(player_logins)`:
+       - Counts the total number of players who logged in again on the day after their first login (`player_logins = 1`).
+     - `COUNT(DISTINCT player_id)`:
+       - Counts the total number of players.
+     - `ROUND(..., 2)`:
+       - Rounds the fraction to two decimal places.
+
+   - **Calculation**:
+     - Players who logged in the next day:
+       - Player 1 logged in on both `2016-03-01` and `2016-03-02`.
+       - Total = 1.
+     - Total players = 3.
+     - Fraction = `1 / 3 = 0.33`.
+
+   - **Final Result**:
+     | fraction |
+     |----------|
+     | 0.33     |
+
+---
+
+### **Output**
+The query calculates the fraction of players who logged in again on the day after their first login, rounded to two decimal places.
+
+| fraction |
+|----------|
+| 0.33     |
+
+---
+
+
