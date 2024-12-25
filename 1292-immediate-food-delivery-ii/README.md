@@ -53,3 +53,106 @@ The customer id 3 has a first order with delivery id 5 and it is scheduled.
 The customer id 4 has a first order with delivery id 7 and it is immediate.
 Hence, half the customers have immediate first orders.
 </pre>
+
+
+
+Here's a detailed breakdown of the query provided:
+
+---
+
+### **Goal**
+The task is to calculate the percentage of **immediate orders** among the **first orders** of all customers, rounded to two decimal places. An order is considered immediate if the customer's preferred delivery date matches the order date.
+
+---
+
+### **Query:**
+
+```sql
+SELECT 
+    ROUND(SUM(IF(min_date = min_delivery_date, 1, 0) * 100) / COUNT(min_date), 2) AS immediate_percentage
+FROM (
+    SELECT 
+        customer_id,
+        MIN(order_date) AS min_date,
+        MIN(customer_pref_delivery_date) AS min_delivery_date
+    FROM 
+        delivery
+    GROUP BY 
+        customer_id
+) AS new_table;
+```
+
+---
+
+### **Step-by-Step Explanation:**
+
+#### 1. **Inner Query:**
+   ```sql
+   SELECT 
+       customer_id,
+       MIN(order_date) AS min_date,
+       MIN(customer_pref_delivery_date) AS min_delivery_date
+   FROM 
+       delivery
+   GROUP BY 
+       customer_id;
+   ```
+   - **Purpose**: Identify the **first order** for each customer.
+   - **Logic**:
+     - `MIN(order_date)` fetches the earliest order date (`min_date`) for each `customer_id`.
+     - `MIN(customer_pref_delivery_date)` fetches the corresponding preferred delivery date for that first order (`min_delivery_date`).
+   - **Result Example** (based on the input data):
+     | customer_id | min_date   | min_delivery_date |
+     |-------------|------------|-------------------|
+     | 1           | 2019-08-01 | 2019-08-02        |
+     | 2           | 2019-08-02 | 2019-08-02        |
+     | 3           | 2019-08-21 | 2019-08-22        |
+     | 4           | 2019-08-09 | 2019-08-09        |
+
+---
+
+#### 2. **Outer Query:**
+   ```sql
+   SELECT 
+       ROUND(SUM(IF(min_date = min_delivery_date, 1, 0) * 100) / COUNT(min_date), 2) AS immediate_percentage
+   FROM 
+       ( ... ) AS new_table;
+   ```
+   - **Purpose**: Calculate the percentage of immediate orders among all first orders.
+
+   - **Key Components**:
+     - **`IF(min_date = min_delivery_date, 1, 0)`**:
+       - Compares the earliest `order_date` (`min_date`) with the preferred delivery date (`min_delivery_date`).
+       - Returns `1` for immediate orders and `0` otherwise.
+     - **`SUM(IF(...)) * 100`**:
+       - Counts the total number of immediate orders and multiplies by 100 to prepare for percentage calculation.
+     - **`COUNT(min_date)`**:
+       - Counts the total number of customers (or first orders).
+     - **`ROUND(..., 2)`**:
+       - Rounds the final percentage to two decimal places.
+
+   - **Calculation**:
+     - Immediate orders:
+       - Customer 2 (2019-08-02 = 2019-08-02)
+       - Customer 4 (2019-08-09 = 2019-08-09)
+       - Total immediate orders = 2.
+     - Total customers = 4.
+     - Immediate percentage = `(2 / 4) * 100 = 50.00`.
+
+   - **Final Result**:
+     | immediate_percentage |
+     |-----------------------|
+     | 50.00                |
+
+---
+
+### **Output**
+The query calculates the percentage of immediate first orders among all customers and outputs the result rounded to two decimal places.
+
+| immediate_percentage |
+|-----------------------|
+| 50.00                |
+
+---
+
+
