@@ -41,4 +41,8 @@
 |  |
 | ------- |
 | [0782-jewels-and-stones](https://github.com/pavankumar6174q/Leetcode/tree/master/0782-jewels-and-stones) |
+## Math
+|  |
+| ------- |
+| [0009-palindrome-number](https://github.com/pavankumar6174q/Leetcode/tree/master/0009-palindrome-number) |
 <!---LeetCode Topics End-->
