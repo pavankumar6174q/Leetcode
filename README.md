@@ -11,6 +11,7 @@
 | [0577-employee-bonus](https://github.com/pavankumar6174q/Leetcode/tree/master/0577-employee-bonus) |
 | [1161-project-employees-i](https://github.com/pavankumar6174q/Leetcode/tree/master/1161-project-employees-i) |
 | [1182-game-play-analysis-iv](https://github.com/pavankumar6174q/Leetcode/tree/master/1182-game-play-analysis-iv) |
+| [1245-user-activity-for-the-past-30-days-i](https://github.com/pavankumar6174q/Leetcode/tree/master/1245-user-activity-for-the-past-30-days-i) |
 | [1292-immediate-food-delivery-ii](https://github.com/pavankumar6174q/Leetcode/tree/master/1292-immediate-food-delivery-ii) |
 | [1317-monthly-transactions-i](https://github.com/pavankumar6174q/Leetcode/tree/master/1317-monthly-transactions-i) |
 | [1338-queries-quality-and-percentage](https://github.com/pavankumar6174q/Leetcode/tree/master/1338-queries-quality-and-percentage) |
