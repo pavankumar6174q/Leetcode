@@ -73,3 +73,104 @@ Employees table:
 +-------------+---------+---------------+-------------+
 
 </pre>
+
+
+
+
+### Query:
+```sql
+SELECT 
+    e1.employee_id, 
+    e1.name,
+    COUNT(e2.employee_id) AS reports_count,
+    ROUND(AVG(e2.age)) AS average_age
+FROM 
+    Employees e1
+JOIN 
+    Employees e2 
+ON 
+    e1.employee_id = e2.reports_to
+GROUP BY 
+    e1.employee_id, e1.name
+ORDER BY 
+    e1.employee_id;
+```
+
+---
+
+### Explanation:
+
+1. **Joining Tables**:
+   - The query joins the `Employees` table to itself using the condition:
+     ```sql
+     e1.employee_id = e2.reports_to
+     ```
+   - This means each `e1` record represents a manager, and each `e2` record represents an employee reporting to that manager.
+
+---
+
+2. **Counting Reports**:
+   - `COUNT(e2.employee_id)` counts the number of employees directly reporting to each manager.
+
+---
+
+3. **Calculating Average Age**:
+   - `AVG(e2.age)` calculates the average age of the employees reporting to each manager.
+   - `ROUND(AVG(e2.age))` rounds the average age to the nearest integer.
+
+---
+
+4. **Grouping Results**:
+   - `GROUP BY e1.employee_id, e1.name` ensures that the counts and averages are calculated for each unique manager.
+
+---
+
+5. **Ordering Results**:
+   - `ORDER BY e1.employee_id` arranges the output by the manager's ID in ascending order.
+
+---
+
+### Input Table Example:
+
+**Employees Table**:
+| employee_id | name    | reports_to | age |
+|-------------|---------|------------|-----|
+| 9           | Hercy   | null       | 43  |
+| 6           | Alice   | 9          | 41  |
+| 4           | Bob     | 9          | 36  |
+| 2           | Winston | null       | 37  |
+
+---
+
+### Execution:
+
+1. **Join Results**:
+   - Matches managers (`e1`) with their direct reports (`e2`):
+     | e1.employee_id | e1.name | e2.employee_id | e2.age |
+     |----------------|---------|----------------|--------|
+     | 9              | Hercy  | 6              | 41     |
+     | 9              | Hercy  | 4              | 36     |
+
+2. **Grouped Results**:
+   - After grouping by `e1.employee_id`:
+     | e1.employee_id | e1.name | COUNT(e2.employee_id) | AVG(e2.age) |
+     |----------------|---------|-----------------------|-------------|
+     | 9              | Hercy  | 2                     | 38.5        |
+
+3. **Final Result**:
+   - Rounded average age and ordered output:
+     | employee_id | name  | reports_count | average_age |
+     |-------------|-------|---------------|-------------|
+     | 9           | Hercy | 2             | 39          |
+
+---
+
+### Output:
+
+For the given example:
+
+| employee_id | name    | reports_count | average_age |
+|-------------|---------|---------------|-------------|
+| 9           | Hercy   | 2             | 39          |
+
+
