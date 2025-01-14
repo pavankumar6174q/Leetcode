@@ -24,6 +24,7 @@
 | [1338-queries-quality-and-percentage](https://github.com/pavankumar6174q/Leetcode/tree/master/1338-queries-quality-and-percentage) |
 | [1390-average-selling-price](https://github.com/pavankumar6174q/Leetcode/tree/master/1390-average-selling-price) |
 | [1462-list-the-products-ordered-in-a-period](https://github.com/pavankumar6174q/Leetcode/tree/master/1462-list-the-products-ordered-in-a-period) |
+| [1625-group-sold-products-by-the-date](https://github.com/pavankumar6174q/Leetcode/tree/master/1625-group-sold-products-by-the-date) |
 | [1664-find-users-with-valid-e-mails](https://github.com/pavankumar6174q/Leetcode/tree/master/1664-find-users-with-valid-e-mails) |
 | [1724-customer-who-visited-but-did-not-make-any-transactions](https://github.com/pavankumar6174q/Leetcode/tree/master/1724-customer-who-visited-but-did-not-make-any-transactions) |
 | [1773-percentage-of-users-attended-a-contest](https://github.com/pavankumar6174q/Leetcode/tree/master/1773-percentage-of-users-attended-a-contest) |
